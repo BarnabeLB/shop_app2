@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/products_overview_screen.dart';
 import '../providers/product.dart';
+import '../providers/cart.dart';
 
 class ProductItem extends StatelessWidget {
   // final String? id;
@@ -24,6 +26,7 @@ class ProductItem extends StatelessWidget {
         listen:
             false); // false indique qu'il n'y aura pas de reconstruction de l'arbre de widget, sauf s'il ya un Consumer
 
+    final cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -62,7 +65,9 @@ class ProductItem extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             color: Theme.of(context).accentColor,
-            onPressed: () {},
+            onPressed: () {
+              cart.addItem(product.id!, product.price!, product.title!);
+            },
           ),
         ),
       ),
