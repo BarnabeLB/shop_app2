@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart.dart' show Cart; // dit à dart que nous ne somme intéressé que par la class Cart dans cart.dart, permet d'utiliser le CartItem d'un autre fichier ainsi
+import '../providers/cart.dart'
+    show
+        Cart; // dit à dart que nous ne somme intéressé que par la class Cart dans cart.dart, permet d'utiliser le CartItem d'un autre fichier ainsi
 import '../widgets/cart_item.dart';
+import '../providers/orders.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -30,7 +33,7 @@ class CartScreen extends StatelessWidget {
                   SizedBox(width: 10),
                   Spacer(),
                   Chip(
-                    label: Text("€ " + cart.totalAmount.toString(),
+                    label: Text("€ " + cart.totalAmount.toStringAsFixed(2),
                         style: TextStyle(
                           color: Theme.of(context)
                               .primaryTextTheme
@@ -41,7 +44,13 @@ class CartScreen extends StatelessWidget {
                   ),
                   TextButton(
                     child: Text('ORDER NOW'),
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                        cart.items.values.toList(),
+                        cart.totalAmount,
+                      );
+                      cart.clear();
+                    },
                   )
                 ],
               ),

@@ -24,11 +24,11 @@ class Cart with ChangeNotifier {
     return {..._items!};
   }
 
-  int get itemCount {
-    return _items!.length; 
+  int get itemCount {                               //get permet de pouvoir accéder à la propriété depuis ailleurs
+    return _items!.length;                          //c'est un moyen plus éconnome que d'écrire une fonction. 
   }
 
-  double get totalAmount {
+  double get totalAmount {            
     var total = 0.0;
     _items!.forEach((key,cartItem) => {
       total += cartItem.price! * cartItem.quantity!//Pourquoi est-ce qu'il n'y a pas de ";" ici ?
@@ -68,5 +68,10 @@ class Cart with ChangeNotifier {
   void removeItem(String productId){
     _items!.remove(productId);
     notifyListeners();  
+  }
+
+  void clear() {
+    _items = {};
+    notifyListeners();
   }
 }
