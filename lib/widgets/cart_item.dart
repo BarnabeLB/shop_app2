@@ -15,7 +15,7 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
+    return Dismissible(                                                               // Le Widget créée est placé dans le return de la fonction build                         
       key: ValueKey(id),
       background: Container(
         color: Theme.of(context).errorColor,
@@ -32,9 +32,29 @@ class CartItem extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {                                                   // confirmDismiss est une key du widget Dismissible
+        return showDialog(                                                            // nécessaire pour afficher le popup AlertDialog
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Are you sure ?'),
+            content: Text('Remove item from the card ?'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(false);                                     // permet de fermer la boite de dialogue en renvoyant une info (false ou true)
+                  },
+                  child: Text('No')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop(true);
+                  },
+                  child: Text('Yes'))
+            ],
+          ),
+        );
+      },
       onDismissed: (direction) {
-        Provider.of<Cart>(context, listen : false).removeItem(productId!); 
-
+        Provider.of<Cart>(context, listen: false).removeItem(productId!);
       },
       child: Card(
         margin: EdgeInsets.symmetric(

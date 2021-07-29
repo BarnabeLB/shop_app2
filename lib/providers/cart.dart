@@ -1,7 +1,4 @@
-     
-
 import 'package:flutter/foundation.dart';
-
 
 class CartItem {
   final String? id;
@@ -24,16 +21,19 @@ class Cart with ChangeNotifier {
     return {..._items!};
   }
 
-  int get itemCount {                               //get permet de pouvoir accéder à la propriété depuis ailleurs
-    return _items!.length;                          //c'est un moyen plus éconnome que d'écrire une fonction. 
+  int get itemCount {
+    //get permet de pouvoir accéder à la propriété depuis ailleurs
+    return _items!
+        .length; //c'est un moyen plus éconnome que d'écrire une fonction.
   }
 
-  double get totalAmount {            
+  double get totalAmount {
     var total = 0.0;
-    _items!.forEach((key,cartItem) => {
-      total += cartItem.price! * cartItem.quantity!//Pourquoi est-ce qu'il n'y a pas de ";" ici ?
-      });
-    return total; 
+    _items!.forEach((key, cartItem) => {
+          total += cartItem.price! *
+              cartItem.quantity! //Pourquoi est-ce qu'il n'y a pas de ";" ici ?
+        });
+    return total;
   }
 
   void addItem(
@@ -65,9 +65,30 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
-  void removeItem(String productId){
+
+  void removeItem(String productId) {
     _items!.remove(productId);
-    notifyListeners();  
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items!.containsKey(productId)) {
+      return;
+    }
+    if (items[productId]!.quantity! > 1) {                                    // S'il y a déjà des item identique dans le cadie         
+      _items!.update(                                                         // on fait une mise à jour
+        productId,                                                            
+        (existingCartItem) => CartItem(
+          id: existingCartItem.id,
+          title: existingCartItem.title,
+          price: existingCartItem.price,
+          quantity: existingCartItem.quantity! - 1,                           // simplement de la quantité d'item dans le cadie, on en retire 1
+        ),
+      );
+    }else{
+      _items!.remove(productId);                                              // Si il n'a qu'un seul item on le retire du cadie
+    }
+    notifyListeners();
   }
 
   void clear() {
