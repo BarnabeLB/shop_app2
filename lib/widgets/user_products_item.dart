@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../screens/edit_product_screen.dart';
+
 class UserProductItem extends StatelessWidget {
   final String? title;
   final double? price;
@@ -21,7 +23,7 @@ class UserProductItem extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: () { },
                 color: Theme.of(context).primaryColor,
               ),
               IconButton(
