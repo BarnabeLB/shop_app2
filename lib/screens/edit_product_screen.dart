@@ -41,7 +41,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
-    _form.currentState!.save();
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();                                             // le formulaire est retournée seulement si les champ on été rempli, si ce n'est pas le cas la fonction s'arrête au return et ne sauvegarde rien
     print(_editedProduct.title);
     print(_editedProduct.description);
     print(_editedProduct.price);
@@ -68,6 +72,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please provide a value.';
+                  }
+                  return null;
                 },
                 onSaved: (value) {
                   _editedProduct = Product(
