@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/providers/products_provider.dart';
+import 'package:provider/provider.dart';
+
 import '../providers/product.dart';
+import '../providers/products_provider.dart'; 
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
@@ -54,10 +58,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     _form.currentState!
         .save(); // le formulaire est retournée seulement si les champ on été rempli, si ce n'est pas le cas la fonction s'arrête au return et ne sauvegarde rien
-    print(_editedProduct.title);
-    print(_editedProduct.description);
-    print(_editedProduct.price);
-    print(_editedProduct.imageUrl);
+    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
